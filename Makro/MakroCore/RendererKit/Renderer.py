@@ -89,7 +89,7 @@ class CommandShow:
                 subprocess.call("osascript -e '{}'".format(script), shell=True, stdout=subprocess.DEVNULL)
         else:
             self.msg.removeprefix('( ) "" ')
-            Quest_result = CommandShow(msg=self.msg).Show(color='WARNING')
+            Quest_result = CommandShow(msg=f'INFO: {self.msg}').Show(color='WARNING')
             return Quest_result
             
     def Input(self):
