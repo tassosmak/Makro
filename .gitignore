@@ -7,4 +7,6 @@ test.py
 .DS_Store
 MakroCore/users
 MakroCore/src/history.log
-
+/bin
+MakroCore/ErrorLoggingKit/errors.log
+MakroCore/src/MakroCore_RuntimeLogs.log

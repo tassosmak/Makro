@@ -1,5 +1,5 @@
 from src import utils
-utils.add_makro()
+utils.add_depend(str(utils.sys.argv[1]))
 from Makro.MakroCore.FlagsCaller import CallHandler as CH
 
 # OFP --> Out Of PyTerminal

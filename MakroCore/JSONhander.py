@@ -1,5 +1,4 @@
 from Makro.MakroCore.RendererKit import Renderer as RD
-from Makro.MakroCore import flags
 import json, os
 
 
@@ -29,11 +28,11 @@ class JSONhandle:
                 
                     return _object_content
                 except json.JSONDecodeError:
-                    if flags.EnableIntSoft:
-                        RD.CommandShow("Error reading file").Info()
+                    # RD.CommandShow("Error reading file").Show('WARNING')
+                    pass
         else:
-            if flags.EnableIntSoft:
-                RD.CommandShow("No file found.").Info()
+            # RD.CommandShow("No file found.").Show('WARNING')
+            pass
 
 
 

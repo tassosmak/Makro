@@ -32,8 +32,6 @@ Flags End
 '''
 
 Dependecies = [
-    'readline',
-    'pyreadline3'
     'ply',
     'ffmpeg',
     'rich',
@@ -124,6 +122,7 @@ _CML =[
 'calculator',
 'stocks',
 'most used commands',
+'toquel',
 'plugins',
 'create user',
 'remove user',
@@ -144,7 +143,7 @@ _ACML = [
 "chatbox",
 "test",
 "ofp",
-'toquel',
+"runtime",
 ]
 
 MD2 = "!Advanced Mode! PyTerminal Beta"

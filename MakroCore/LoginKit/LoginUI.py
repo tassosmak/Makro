@@ -33,27 +33,37 @@ class LoginHandlerUserStore:
                 pass
         return ask_Password
 
+    
     def Verify_User_Exists(self):
-        if os.path.exists(f'{flags.base_folder}/users/'):
+        from Makro.MakroCore import runtimebridge
+        kernel = runtimebridge.get_kernel()
+        if os.path.exists(f'{kernel.get_folder()}/users/'):
             correct_credentials = False
             while not correct_credentials:
                 utils.clear_screen()
                 username = self.ask_username()
-                path = f'{flags.base_folder}/users/{username}.json'
+                path = f'{kernel.get_folder()}/users/{username}.json'
                 if username != "":
                     if username not in flags.ForbidenUsername:
                         if os.path.isfile(path):
-                            cred.get_credentials(False, path)
-                            if username == cred.Name:
-                                flags.USERNAME = username
+                            # cred.get_credentials(False, path)
+                            kernel =runtimebridge.get_kernel(username, True)
+                            # if username == cred.Name:
+                            if username == kernel.get_state('username'):
+                                # flags.USERNAME = username
+                                kernel.request_change('username', username)
                                 password = self.ask_password()
-                                if password == cred.Password:
-                                    flags.PASSWORD = password
+                                # if password == cred.Password:
+                                if password == kernel.get_state('password'):
+                                    # flags.PASSWORD = password
+                                    kernel.request_change('password', password)
                                     correct_credentials = True
                 else:
                     flags.MODE = "3"
                     flags.USERNAME = "Native-Mode"
                     correct_credentials = True
         else:
+            while True:
+                print("No users found, starting FTU...")
             os.makedirs(f'{flags.base_folder}/users')
             FTU(edit_use=True).run()

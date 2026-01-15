@@ -1,4 +1,6 @@
 from Makro.MakroCore.ErrorLoggingKit import Logger as logger
+from Makro.MakroCore import runtimebridge
+# kernel = runtimebridge.get_kernel()
 from Makro.MakroCore.RendererKit.ProgressBarKit import tqdm
 from Makro.MakroCore.RendererKit import Renderer as RD
 from Makro.MakroCore.JSONhander import JSONhandle
@@ -80,10 +82,16 @@ class Exit:
         os._exit(1)
 
 def clear_screen():
-    if flags.pl == "1" or flags.pl == "3":
+    kernel = runtimebridge.get_kernel()
+    # print(kernel.state)
+    # print(kernel.get_state('pl'))
+    # if flags.pl == "1" or flags.pl == "3":
+    if kernel.get_state('pl') == "1" or kernel.get_state('pl') == "3":
         os.system('clear')
-    elif flags.pl == '2':
+    # elif flags.pl == '2':
+    elif kernel.get_state('pl') == '2':
         os.system('cls')
+    print(kernel.get_state('pl'))
 
 def progress_bar(module=str, arg1=str, arg2=str, description=str):
     if not description==flags.Default_text:
@@ -93,8 +101,9 @@ def progress_bar(module=str, arg1=str, arg2=str, description=str):
 
 
 def clear_gui():
-    if not flags.pl == str:
-        if flags.pl == '1':
+    kernel = runtimebridge.get_kernel()
+    if not kernel.get_state('mode') == str:
+        if kernel.get_state('mode') == '1':
             try:
                 subprocess.run('killall osascript', shell=True, capture_output=True , check=True, encoding="utf-8")
             except: pass
@@ -121,21 +130,27 @@ class ModeHandling:
             Exit.exit()
             
     def jump_mode():
-        clear_screen()
+        kernel = runtimebridge.get_kernel()
         ask_core = str
-        if flags.Fully_GUI and flags.MODE == '9':
+        # if flags.Fully_GUI and flags.MODE == '9':
+        if kernel.get_state('Fully_GUI') and kernel.get_state('mode') == '9':
             ask_core = RD.CommandShow(msg="there are 2 Modes on this terminal:\n1) The Basic Mode,     2) The Advanced Mode").Choice(Button1='1', Button2='2')
         else:
             while not ask_core in flags.ModeList:
                 try:
                     RD.CommandShow("there are 2 Modes on this terminal:\n1) The Basic Mode,     2) The Advanced Mode").Show()
                     ask_core = input("Select Mode")
-                    if ask_core == '9' and flags.EnableIntSoft == False:
+                    # if ask_core == '9' and flags.EnableIntSoft == False:
+                    if ask_core == '9' and kernel.get_state('IntSoft') == False:
                             ask_core = '2'
                 except EOFError:
                     continue
 
-        flags.MODE = ask_core
+        # flags.MODE = ask_core
+        print(ask_core)
+        kernel.request_change('mode', ask_core)
+        kernel.request_change('jump', False)
+        print(kernel.get_state('mode'))
         flags.jump = False
         RD.CommandShow("this is only for the current sension\nthe next time it will be restored\nto the previous state").Show('WARNING')
 
@@ -184,15 +199,25 @@ def lock_start(file):
             Exit.exit()
 
 def pl_finder():
+    kernel = runtimebridge.get_kernel()
     pl = platform.platform()
     if pl.startswith("macOS"):
-        flags.sys_detect = platform.uname()
-        flags.pl = "1"
+        # flags.sys_detect = platform.uname()
+        # flags.pl = "1"
+        kernel.request_change('sys_detect', platform.uname())
+        kernel.request_change('pl', '1')
     elif pl.startswith("Windows"):
-        flags.sys_detect = platform.uname()
-        flags.pl = "2"
+        # flags.sys_detect = platform.uname()
+        # flags.pl = "2"
+        kernel.request_change('sys_detect', platform.uname())
+        kernel.request_change('pl', '2')
     elif pl.startswith("Linux"):
-        flags.sys_detect = platform.uname()
-        flags.pl = "3"
+        # flags.sys_detect = platform.uname()
+        # flags.pl = "3"
+        kernel.request_change('sys_detect', platform.uname())
+        kernel.request_change('pl', '3')
     else:
         Exit.error_exit()
+    while True:
+        print(kernel.get_state('pl'))
+    #     print(platform.uname())

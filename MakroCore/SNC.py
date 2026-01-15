@@ -2,8 +2,9 @@
 # SNC short for : SerialNumberCheck
 
 from Makro.MakroCore.utils import edit_user_config
-from Makro.MakroCore import credentials as cred
-from Makro.MakroCore import flags
+from Makro.MakroCore import runtimebridge
+# from Makro.MakroCore import credentials as cred
+# from Makro.MakroCore import flags
 import subprocess
 
 class PlatformError(Exception):
@@ -13,13 +14,15 @@ class PlatformError(Exception):
 class snc:
     def __init__(self, write=False):
         self.write = write
+        self.kernel = runtimebridge.get_kernel()
         
     def run(self):
         if self.write == False:
             Serial =  subprocess.run(self.cmd, shell=True, capture_output=True, check=True, encoding="utf-8") \
                         .stdout \
                         .strip()
-            if not Serial == cred.SerialNum:
+            # if not Serial == cred.SerialNum:
+            if not Serial == self.kernel.get_state('Serial'):
                 raise IndexError
         else:
             try:
@@ -30,7 +33,8 @@ class snc:
                 return None
 
     def guid(self, USERNAME):
-        if flags.pl == '1':
+        # if flags.pl == '1':
+        if self.kernel.get_state('pl') == '1':
             if self.write == True:
                 self.cmd = "ioreg -d2 -c IOPlatformExpertDevice | awk -F\\\" '/IOPlatformUUID/{print $(NF-1)}'"
                 edit_user_config(username=USERNAME, Loc1='user_credentials', Loc2='Serial', Content=self.run())
@@ -38,7 +42,8 @@ class snc:
                 self.cmd = "ioreg -d2 -c IOPlatformExpertDevice | awk -F\\\" '/IOPlatformUUID/{print $(NF-1)}'"
                 self.run()
 
-        elif flags.pl == '2':
+        # elif flags.pl == '2':
+        elif self.kernel.get_state('pl') == '2':
             if self.write:
                 self.cmd = 'wmic csproduct get uuid'
                 edit_user_config(username=USERNAME, Loc1='user_credentials',Loc2='Serial', Content=self.run())
@@ -46,7 +51,8 @@ class snc:
                 self.cmd = 'wmic csproduct get uuid'
                 self.run()
 
-        elif flags.pl == '3':
+        # elif flags.pl == '3':
+        elif self.kernel.get_state('pl') == '3':
             if self.write:
                 self.cmd = 'cat /var/lib/dbus/machine-id'
                 edit_user_config(username=USERNAME, Loc1='user_credentials', Loc2='Serial', Content=self.run())

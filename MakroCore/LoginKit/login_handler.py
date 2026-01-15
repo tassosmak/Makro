@@ -30,4 +30,4 @@ class LoginHandler():
         Login.Verify_User_Exists()
         if flags.EnableIntSoft:
             Login.two_step_verification()
-        Login.welcome_prompt()
+        # Login.welcome_prompt()
