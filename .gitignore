@@ -5,7 +5,6 @@ __pycache__/
 ##########
 test.py
 .DS_Store
-/Makro/.DS_Store
-/Makro/MakroCore/users
-/Makro/MakroCore/src/history.log
+MakroCore/users
 MakroCore/src/history.log
+
