@@ -7,3 +7,4 @@ test.py
 .DS_Store
 /Makro/.DS_Store
 /Makro/MakroCore/users
+/Makro/MakroCore/src/history.log
