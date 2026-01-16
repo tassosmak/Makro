@@ -1,21 +1,12 @@
-import sys
+import sys, os
 
-kernel = None
 
-def add_depend(path):
-    global kernel
-    substring = "Makro/MakroCore"
-    fix_path = ""
-    str_list = path.split(substring)
-    for element in str_list:
-        fix_path += element    
-    
-    sys.path.insert(0, fix_path)
-    
-    from Makro.MakroCore import credentials as cred, utils, SystemCalls, runtimebridge
-    kernel = runtimebridge.get_kernel('default', True)
+def add_makro():
+    sys_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+    sys.path.insert(0, sys_path)
+
+    from Makro.MakroCore import credentials as cred, utils, SystemCalls, flags
     utils.pl_finder()
     SystemCalls.SystemCalls.get_folder()
-    cred.get_credentials(False, f'{path}/users/default.json')
+    cred.get_credentials(False, f'{flags.base_folder}/users/{str(sys.argv[1])}.json')
     utils.clear_screen()
-    

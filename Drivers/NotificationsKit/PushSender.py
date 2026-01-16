@@ -10,7 +10,7 @@ class Notifications():
     def __init__(self):
          pass
     
-    # @break_after(3)
+    @break_after(3)
     def Sender(self, content):
         self.server = NTFYServer("http://192.168.1.63:80")
         self.user = NTFYUser("tassosmak", "8596")

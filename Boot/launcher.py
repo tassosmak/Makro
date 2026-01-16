@@ -5,18 +5,15 @@ from Makro.MakroCore.SystemCalls import SystemCalls
 from Makro.MakroCore.FTU import FTU_init as FTU
 from Makro.MakroCore.UserHandler import loader
 from Makro.MakroCore import flags
-from Makro.MakroCore import runtimebridge
 
-# @SystemCalls().Grapher
-# @SystemCalls().measure_time
+@SystemCalls.Grapher
+@SystemCalls.measure_time
 def _run():
-        kernel = runtimebridge.get_kernel()
         try:
             MDH.core()
         except IndexError:
             MoDeH.recover_mode()
-        # if flags.jump:
-        if kernel.get_state('jump'):
+        if flags.jump:
             MoDeH.jump_mode()
         if flags.logout:
             loader()

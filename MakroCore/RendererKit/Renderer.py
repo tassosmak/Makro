@@ -4,7 +4,7 @@ PyTerminal Rendering Library
 
 from Makro.Drivers.NotificationsKit import Alert, Buttons, Dialog, Icon
 
-from Makro.MakroCore import flags, utils, runtimebridge
+from Makro.MakroCore import flags, utils
 try: 
     from Makro.MakroCore.RendererKit.HighlightKit import color_text
 except: pass
@@ -48,13 +48,11 @@ class CommandShow:
                 header=f'{flags.Default_text} {header}'
         self.header = header
         self.msg = msg
-        self.kernel = runtimebridge.get_kernel()
         
     
     
     def Push(self):
-        # if flags.pl == '1' and flags.FTU == '1' and flags.EnableGUI == True:
-        if self.kernel.get_state('pl') == '1' and self.kernel.get_state('FTU') == '1' and self.kernel.get_state('enable_gui') == True:
+        if flags.pl == '1' and flags.FTU == '1' and flags.EnableGUI == True:
             command = f'''
             osascript -e 'display notification "{self.msg}" with title "{self.header}"'
             '''
@@ -65,10 +63,8 @@ class CommandShow:
     
     def Choice(self, Button1='No', Button2='Yes', Button3=None):
         global Quest_result
-        # if flags.EnableGUI:
-        if self.kernel.get_state('enable_gui'):
-                # if flags.pl == '1':
-                if self.kernel.get_state('pl') == '1':
+        if flags.EnableGUI:
+                if flags.pl == '1':
                     if not Button3 == None:
                         al = Alert(self.msg).with_buttons(Buttons([Button1, Button2, Button3])).show()
                     else:
@@ -84,10 +80,8 @@ class CommandShow:
             
     def Info(self):
         global Quest_result
-        # if flags.EnableGUI:
-        if self.kernel.get_state('enable_gui'):
-            # if flags.pl == '1':
-            if self.kernel.get_state('pl') == '1':
+        if flags.EnableGUI:
+            if flags.pl == '1':
                 script = f"""
                 display dialog "{self.msg}" with title "{self.header}" with icon note buttons "OK"
                 """
@@ -95,25 +89,26 @@ class CommandShow:
                 subprocess.call("osascript -e '{}'".format(script), shell=True, stdout=subprocess.DEVNULL)
         else:
             self.msg.removeprefix('( ) "" ')
-            Quest_result = CommandShow(msg=self.msg).Show(color='WARNING')
+            Quest_result = CommandShow(msg=f'INFO: {self.msg}').Show(color='WARNING')
             return Quest_result
             
     def Input(self):
         global Quest_result
-        # if flags.EnableGUI:
-        if self.kernel.get_state('enable_gui'):
-            # if flags.pl == '1':
-            if self.kernel.get_state('pl') == '1':
-                buttons = Buttons(["Ok"])
-                the_dialog = Dialog(self.msg).with_title(self.header)
+        if flags.EnableGUI:
+            if flags.pl == '1':
+                buttons = Buttons(['Exit', 'Ok'])
+                the_dialog = Dialog(self.msg)
+                the_dialog.with_title(self.header)
                 the_dialog.with_buttons(buttons)
                 the_dialog.with_icon(Icon.NOTE)
-                the_dialog.with_input("Type Here:")
+                the_dialog.with_input()
+
 
                 result = the_dialog.show()
+                if result.button_returned == "Exit":
+                    utils.Exit.exit()
                 
-                # if flags.Fully_GUI == False:
-                if self.kernel.get_state('Fully_GUI') == False:
+                if flags.Fully_GUI == False:
                     if result.text_returned == 'exit':
                         utils.clear_gui()
                 
@@ -124,8 +119,7 @@ class CommandShow:
 
 
     def Show(self, color='', legacy=False):
-        # if legacy == False and flags.FTU =='1':
-        if legacy == False and self.kernel.get_state('FTU') == '1':
+        if legacy == False and flags.FTU =='1':
             try:
                 if "WARNING" in color: 
                     color_text.output(content=self.msg, args='Bold Yellow')

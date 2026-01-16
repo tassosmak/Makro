@@ -10,17 +10,12 @@ from Makro.MakroCore import TaskHandler, flags
 from Makro.Drivers.AudioKit import Audio
 from Makro.MakroCore.src import registry
 from Makro.MakroCore import utils
-from Makro.MakroCore.runtimebridge import get_kernel
-
 
 import sys
 import os
 
 def CommandList(Command=str):
     try:
-        
-        kernel = get_kernel()
-        
         global ask_recv
         if flags.EnableIntSoft and flags.Run_Straight_Builtin and flags.MODE == '9':
             TaskHandler.SecondaryTask(Command)
@@ -128,10 +123,8 @@ def CommandList(Command=str):
 
 
         if Command == "jump":
-            # if not flags.safe_md:
-            if not kernel.get_state('safe_md'):
-                # flags.jump = True
-                kernel.request_change('jump', True)
+            if not flags.safe_md:
+                flags.jump = True
 
 
         if Command == "print md":
@@ -224,7 +217,7 @@ def CommandList(Command=str):
             if not flags.safe_md:
                 if flags.MODE == "2" or flags.MODE == "9":
                     RD.CommandShow("Type The Adress Of The Site You Want To Check", 'Down Detecter').Input()
-                    os.system(f"ping {RD.Quest_result}")
+                    os.system(f"ping {RD.Quest_result} -c 4")
 
                 else:
                     RD.CommandShow(msg="This Function isn't available within this mode").Show('WARNING')
@@ -232,7 +225,6 @@ def CommandList(Command=str):
 
 
         if Command == "logout":
-            clear_screen()
             flags.logout = True
 
         if Command == 'chatbox':
@@ -245,34 +237,25 @@ def CommandList(Command=str):
                     clear_screen()
 
         if Command == 'infostats':
-            # if not flags.safe_md:
-            if not kernel.get_state('safe_md'):
-                # if flags.EnableIntSoft:
-                if kernel.get_state('IntSoft'):
+            if not flags.safe_md:
+                if flags.EnableIntSoft:
                     clear_screen()
                     RD.CommandShow(msg=flags.Default_text).Show('PURPLE')
                     RD.CommandShow('').Show()
                     RD.CommandShow(msg=sys.version).Show('OKGREEN')
                     RD.CommandShow('').Show()
-                    # RD.CommandShow(msg=("Platform ID: " + flags.pl)).Show(color='BLUE')
-                    RD.CommandShow(msg=("Platform ID: " + kernel.get_state('pl'))).Show(color='BLUE')
-                    # RD.CommandShow(msg=("Username: " + flags.USERNAME)).Show('BLUE')
-                    RD.CommandShow(msg=("Username: " + kernel.get_state('username'))).Show('BLUE')
+                    RD.CommandShow(msg=("Platform ID: " + flags.pl)).Show(color='BLUE')
+                    RD.CommandShow(msg=("Username: " + flags.USERNAME)).Show('BLUE')
                     RD.CommandShow(msg="\nFlags Below:").Show('Bold Green')
-                    # RD.CommandShow(("UserLess Connection", flags.UserLess_Connection)).Show()
-                    RD.CommandShow(("UserLess Connection", kernel.get_state('UserLess_Connection'))).Show()
-                    # RD.CommandShow(("GO TO FTU", flags.GO_TO_FTU)).Show()
-                    RD.CommandShow(("GO TO FTU", kernel.get_state('GO TO FTU'))).Show()
-                    # RD.CommandShow(("Fully GUI", flags.Fully_GUI)).Show()
-                    RD.CommandShow(("Fully GUI", kernel.get_state('Fully_GUI'))).Show()
-                    # RD.CommandShow(("Inside_Thread", flags.Inside_Thread)).Show()
-                    RD.CommandShow(("Inside_Thread", kernel.get_state('Run-Threads Inside'))).Show()
+                    RD.CommandShow(("UserLess Connection", flags.UserLess_Connection)).Show()
+                    RD.CommandShow(("GO TO FTU", flags.GO_TO_FTU)).Show()
+                    RD.CommandShow(("Fully GUI", flags.Fully_GUI)).Show()
+                    RD.CommandShow(("Inside_Thread", flags.Inside_Thread)).Show()
                 else:
-                    # from Makro.MakroCore.credentials import get_credentials
-                    # MODE = flags.MODE
-                    # get_credentials(True, f'{flags.base_folder}/users/{flags.USERNAME}.json')
-                    # flags.MODE = MODE
-                    RD.CommandShow(kernel.state).Show('BLUE')
+                    from Makro.MakroCore.credentials import get_credentials
+                    MODE = flags.MODE
+                    get_credentials(True, f'{flags.base_folder}/users/{flags.USERNAME}.json')
+                    flags.MODE = MODE
 
         if Command == "show cmd" or Command == 'show apps' or Command == 'help':
             RD.CommandShow(msg='Available Commands').Show('OKGREEN')
@@ -297,12 +280,10 @@ def CommandList(Command=str):
                 TaskHandler.SecondaryTask('OFP')
 
         if Command == 'show flags':
-            if not kernel.get_state('safe_md'):
-                if kernel.get_state('IntSoft'):
+            if not flags.safe_md:
+                if flags.EnableIntSoft:
                     clear_screen()
-                    # Notifications().Sender(SystemCalls.show_flags())
-                    RD.CommandShow(kernel.state).Show('BLUE')
-                    Notifications().Sender(str(kernel.state))
+                    Notifications().Sender(SystemCalls.show_flags())
 
         if Command == 'converter':
             TaskHandler.SecondaryTask('temp_mesuare_converter', stay_end=True)
@@ -416,10 +397,5 @@ def CommandList(Command=str):
             if not flags.safe_md:
                 if flags.EnableIntSoft:
                     utils.clear_gui()
-                    
-        if Command == 'runtime':
-            RD.CommandShow(kernel.state).Show('BLUE')
-            RD.CommandShow(kernel.get_state('mode')).Show('GREEN')
-            
 
     except: Exit.error_exit()

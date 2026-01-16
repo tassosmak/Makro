@@ -15,7 +15,7 @@
 #     return _kernel_instance
 
 # Makro/MakroCore/RuntimeBridge.py
-from Makro.MakroCore.runtime import KernelRuntime
+from Makro.MakroCore.Runtime import KernelRuntime
 
 # Hold the shared runtime instance
 _kernel_instance = None
