@@ -34,7 +34,7 @@ class LoginHandlerUserStore:
         return ask_Password
 
     def Verify_User_Exists(self):
-        if os.path.exists(f'{flags.base_folder}/users/'):
+        if os.path.exists(f'{flags.base_folder}/users/')and not len(os.listdir(f"{flags.base_folder}/users")) == 0:
             correct_credentials = False
             while not correct_credentials:
                 utils.clear_screen()
@@ -55,5 +55,6 @@ class LoginHandlerUserStore:
                     flags.USERNAME = "Native-Mode"
                     correct_credentials = True
         else:
-            os.makedirs(f'{flags.base_folder}/users')
+            try:os.makedirs(f'{flags.base_folder}/users')
+            except FileExistsError:pass
             FTU(edit_use=True).run()
