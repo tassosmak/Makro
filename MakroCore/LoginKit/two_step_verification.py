@@ -15,11 +15,11 @@ class TwoStepVerification:
                 Exit.exit()
             while not verified:
                 if flags.Fully_GUI and flags.MODE == '9':
-                    ask_code = RD.CommandShow('We Have Send A code to your Phone').Input()
+                    ask_code = RD.CommandShow('Check The Code We Sent You: ').Input()
                     if ask_code == code:
                         verified = True
                 else:
-                    ask_code = input('We Have Send A code to your Phone')
+                    ask_code = input('Check The Code We Sent You: ')
                     if ask_code == code:
                         verified = True
         else:
