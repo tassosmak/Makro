@@ -2,6 +2,7 @@
 The Command List
 '''
 from Makro.Drivers.NotificationsKit.PushSender import Notifications
+# from Makro.Drivers.NotificationsKit.adv_auth import adv_auth
 from Makro.MakroCore.RendererKit import Renderer as RD
 from Makro.MakroCore.KernelReboot import KernelReboot
 from Makro.MakroCore.utils import clear_screen, Exit
@@ -391,7 +392,8 @@ def CommandList(Command=str):
                         RD.CommandShow(msg='Makro Reload Failed').Show('FAIL')
 
         if Command == 'password manager':
-            TaskHandler.SecondaryTask('Password_Manager')
+            if Notifications.adv_auth():
+                TaskHandler.SecondaryTask('Password_Manager')
             
         if Command == 'clear gui':
             if not flags.safe_md:
