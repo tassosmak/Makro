@@ -1,6 +1,5 @@
-from src import utils
-utils.add_makro()
-from Makro.MakroCore.FlagsCaller import CallHandler as CH
+from src.MiddleManKit.MiddleMan import *
+util.build()
 
 # OFP --> Out Of PyTerminal
 import os
@@ -13,7 +12,7 @@ def run():
         from os import _exit
         _exit(1)
 
-if CH.IntSoft():
+if Data.IntSoft():
     while True:
         try:run()
         except: print('\n')

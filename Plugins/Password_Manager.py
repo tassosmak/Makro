@@ -1,18 +1,11 @@
 import json, os
-
-from src.utils import add_makro
-add_makro()
-
-from Makro.MakroCore.CryptographyKit import EncryptPassword as EP
-from Makro.MakroCore.CryptographyKit.decrypt import Decryptor
-from Makro.MakroCore.FlagsCaller import CallHandler as CH
-from Makro.MakroCore.RendererKit import Renderer as RD
-from Makro.MakroCore.JSONhander import JSONhandle
+from src.MiddleManKit.MiddleMan import *
+util.build()
 
 class PasswordManager:
     
     def __init__(self):
-        self.file_path = f'{CH.get_base_folder()}/../Plugins/src/pwdfile.json'
+        self.file_path = f'{Data().get_base_folder()}/../Plugins/src/pwdfile.json'
         self.username = str
         self.password = str
         self.filename = str
@@ -37,56 +30,57 @@ class PasswordManager:
 
                                                                                                                                                                                          
     def add_password(self):
-        self.filename = RD.CommandShow('Give a name for the login').Input()
-        self.username = RD.CommandShow("Type the Username Of the Passwords You Want to Add").Input()
+        self.filename = Render('Give a name for the login').Input()
+        self.username = Render("Type the Username Of the Passwords You Want to Add").Input()
         
-        self.password = RD.CommandShow("Type the Passwords You Want to Add").Input()
+        self.password = Render("Type the Passwords You Want to Add").Input()
         correct_pwd = False
         while not correct_pwd:
-            confirm_password = RD.CommandShow("Confirm the Password").Input()
+            confirm_password = Render("Confirm the Password").Input()
             if confirm_password == self.password:
                 correct_pwd = True
             else:
-                RD.CommandShow("Passwords do not match, please try again.").Info()
-        self.password = EP.encrypt_password(self.password, False)
+                Render("Passwords do not match, please try again.").Info()
+        self.password = Cryptography(self.password).Encrypt()
+        
         self.manage_file(self.filename, self.username, self.password)
 
     
     def view_passwords(self):
         correct_name = False
         while correct_name == False:
-            self.filename = RD.CommandShow("Enter the name of the Usesname/Password Combo you want to view").Input()
+            self.filename = Render("Enter the name of the Usesname/Password Combo you want to view").Input()
             try:
-                self.username = JSONhandle(self.file_path).read_file(self.filename, 'Name')
-                self.password = JSONhandle(self.file_path).read_file(self.filename, 'Password')
+                self.username = JSON.json_read(self.file_path, self.filename, 'Name')
+                self.password = JSON.json_read(self.file_path, self.filename, 'Password')
                 correct_name = True
-                RD.CommandShow(f"Your Username is: {self.username} and Password is: {Decryptor(self.password).decrypt_password()}").Info()
+                Render(f"Your Username is: {self.username} and Password is: {Cryptography(self.password).decryptor()}").Info()
             except FileNotFoundError:
-                RD.CommandShow("Password file not found.").Info()
+                Render("Password file not found.").Info()
             except:
                 correct_name = False
                 
     def del_login(self):
         correct_name = False
         while not correct_name:
-            array = RD.CommandShow("Enter the name of the login you want to delete").Input()
-            if not RD.Quest_result.lower() == 'exit':
+            array = Render("Enter the name of the login you want to delete").Input()
+            if not array.lower() == 'exit':
                 try:
-                    JSONhandle(self.file_path).del_contents(array=array)
+                    JSON.json_delete(self.file_path, array)
                     correct_name = True
-                except KeyError: RD.CommandShow("Login not found. Please try again.").Info()
+                except KeyError: Render("Login not found. Please try again.").Info()
             else:
                 correct_name = True
                 
 
     def greet(self):
-        RD.CommandShow("Welcome to the Makro Password Manager\nWhat would you like to do?").Choice(Button1='Delete Login', Button2='View Login', Button3='New Login')
-        RD.Quest_result = RD.Quest_result.lower().strip(' ')
-        if RD.Quest_result.lower().strip(' ') == 'new login':
+        Render("Welcome to the Makro Password Manager\nWhat would you like to do?").b3_Choice(Button1='Delete Login', Button2='View Login', Button3='New Login')
+        ask = Render.Quest_result.lower().strip(' ')
+        if ask.lower().strip(' ') == 'new login':
             self.add_password()
-        elif RD.Quest_result.lower().strip(' ') == 'view login':
+        elif ask.lower().strip(' ') == 'view login':
             self.view_passwords()
-        elif RD.Quest_result.lower().strip(' ') == 'delete login':
+        elif ask.lower().strip(' ') == 'delete login':
             self.del_login()
             
 

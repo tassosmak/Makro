@@ -8,3 +8,5 @@ test.py
 MakroCore/users
 MakroCore/src/history.log
 MakroCore/ErrorLoggingKit/errors.log
+# MakroCore/**/*.json
+Plugins/**/*.json

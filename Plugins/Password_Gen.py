@@ -1,14 +1,12 @@
 from random import shuffle, choice
 import string
 
-from src.utils import add_makro, sys
-add_makro()
-from Makro.MakroCore.FlagsCaller import CallHandler as CH
-from Makro.MakroCore.RendererKit import Renderer as RD
+from src.MiddleManKit.MiddleMan import *
+util.build()
 
 characters = list(string.ascii_letters + string.digits + "!@#$%^&*()")
-RD.CommandShow(msg="How long do you want your password to be").Input()
-length = int(RD.Quest_result)
+ask = Render("How long do you want your password to be", 'Password Generator').Input()
+length = int(ask)
 shuffle(characters)
 password = []
 for i in range(length):
@@ -16,12 +14,12 @@ for i in range(length):
 password_str = ''.join(str(e) for e in password)
 # RD.CommandSay(answer=("".join(password)), color='OKGREEN')
 password = ''.join(password)
-RD.CommandShow(f'Your Password Is: {password}').Push()
-RD.CommandShow(msg="Would You like to export the password to a text file").Choice()
-if 'yes' in RD.Quest_result.lower():
-    with open(f"{CH.get_base_folder()}/../password.txt", "w") as f:
+Render(f'Your Password Is: {password}').Push()
+Render("Would You like to export the password to a text file").Choice()
+if 'yes' in Render.Quest_result.lower():
+    with open(f"{Data().get_base_folder()}/../password.txt", "w") as f:
         f.write(password_str)
-    RD.CommandShow('The File Is Saved', 'Password Generator').Push()
+    Render('The File Is Saved', 'Password Generator').Push()
     from subprocess import call 
-    file_to_show = f"{CH.get_base_folder()}/../Password.txt"
+    file_to_show = f"{Render().get_base_folder()}/../Password.txt"
     call(["open", "-R", file_to_show])

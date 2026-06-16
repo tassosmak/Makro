@@ -1,6 +1,5 @@
-from src.utils import add_makro, sys
-add_makro()
-from Makro.MakroCore.RendererKit import Renderer as RD
+from src.MiddleManKit.MiddleMan import *
+util.build()
 
 # Define a dictionary to store variables and their values
 variables = {}
@@ -107,12 +106,12 @@ def print_history():
     Print the history of calculations.
     """
     for h in history:
-        RD.CommandShow(msg=h).Info()
+        Render(h).Info()
 
 # Define the main loop
 while True:
     # Get input from the user
-    expression = RD.CommandShow(msg='Enter Your Operation', header='Calculator').Input()
+    expression = Render('Enter Your Operation', header='Calculator').Input()
     
     # Exit the program if the user types "exit"
     if expression == 'exit':
@@ -125,4 +124,4 @@ while True:
 
     # Parse and evaluate the expression
     result = parse_expression(expression)
-    RD.CommandShow(f'Your Result Is {result}', 'Calculator').Push()
+    Render(f'Your Result Is {result}', 'Calculator').Push()

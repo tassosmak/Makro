@@ -1,14 +1,11 @@
-from src import utils
-utils.add_makro()
-from Makro.MakroCore.RendererKit import Renderer as RD
-from Makro.MakroCore.SystemCalls import SystemCalls
-from Makro.MakroCore import utils
+from src.MiddleManKit.MiddleMan import *
+util.build()
 
 try:
     import clipboard
 except ModuleNotFoundError:
-    RD.CommandShow("Clipboard Module Is missing").Show('WARNING')
-    utils.Exit.exit()
+    Render("Clipboard Module Is missing").Show('WARNING')
+    util.exit()
 
 line_to_copy="0"
 def Lastlines():
@@ -17,7 +14,7 @@ def Lastlines():
         for line in (file.readlines() [-1:]):
             line_to_copy=line
 
-base_folder = SystemCalls.get_folder()
+base_folder = Data().get_base_folder()
 Lastlines()
 clipboard.copy(str(line_to_copy))
-RD.CommandShow("DONE").Show('OKGREEN')
+Render("DONE").Show('OKGREEN')
