@@ -14,9 +14,9 @@ def Verify_File_Exist(file_name):
         # JSONhandle.read_file(f'{flags.base_folder}/../Plugins/{plugin_name}.json')
         open(path, 'r')
     except FileNotFoundError:
-        from src.MiddleManKit import recover_json, json_setup
-        recover_json.gen_file(plugin_name)
-        json_setup.json_setup(path, plugin_name)
+        from src.MiddleManKit.file_handler import gen_file, json_setup
+        gen_file(plugin_name)
+        json_setup(path, plugin_name)
         
     
     filesystem = JSONhandle(path).read_file('premisions', 'Filesystem')

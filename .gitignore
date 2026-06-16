@@ -10,3 +10,4 @@ MakroCore/src/history.log
 MakroCore/ErrorLoggingKit/errors.log
 # MakroCore/**/*.json
 Plugins/**/*.json
+Plugins/src/pwdfile.json

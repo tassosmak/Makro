@@ -50,9 +50,10 @@ class PasswordManager:
         correct_name = False
         while correct_name == False:
             self.filename = Render("Enter the name of the Usesname/Password Combo you want to view").Input()
+            print(self.filename)
             try:
-                self.username = JSON.json_read(self.file_path, self.filename, 'Name')
-                self.password = JSON.json_read(self.file_path, self.filename, 'Password')
+                self.username = JSON(self.file_path).json_read(self.filename, 'Name')
+                self.password = JSON(self.file_path).json_read(self.filename, 'Password')
                 correct_name = True
                 Render(f"Your Username is: {self.username} and Password is: {Cryptography(self.password).decryptor()}").Info()
             except FileNotFoundError:
@@ -66,7 +67,7 @@ class PasswordManager:
             array = Render("Enter the name of the login you want to delete").Input()
             if not array.lower() == 'exit':
                 try:
-                    JSON.json_delete(self.file_path, array)
+                    JSON(self.file_path).json_delete(array)
                     correct_name = True
                 except KeyError: Render("Login not found. Please try again.").Info()
             else:
