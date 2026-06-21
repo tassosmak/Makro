@@ -1,4 +1,3 @@
-from Makro.MakroCore.RendererKit import Renderer as RD
 from Makro.MakroCore.JSONhander import JSONhandle
 from Makro.MakroCore import flags
 from pathlib import Path
