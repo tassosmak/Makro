@@ -12,7 +12,7 @@ def run():
         from os import _exit
         _exit(1)
 
-if Data.IntSoft():
+if Data().IntSoft():
     while True:
         try:run()
         except: print('\n')

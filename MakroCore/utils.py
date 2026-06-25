@@ -140,12 +140,13 @@ class ModeHandling:
         RD.CommandShow("this is only for the current sension\nthe next time it will be restored\nto the previous state").Show('WARNING')
 
 def is_gui():
-    gui_vars = ['DISPLAY', 'WAYLAND_DISPLAY', 'MIR_SOCKET']
-    if any(var in os.environ for var in gui_vars):
+    if platform.system() == "Darwin":
         return True
-    if not sys.stdout.isatty():
-        return False
-    return False
+
+    return any(
+        var in os.environ
+        for var in ("DISPLAY", "WAYLAND_DISPLAY", "MIR_SOCKET")
+    )
 
 def lock_start(file):
     pl_finder()

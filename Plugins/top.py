@@ -85,5 +85,8 @@ if flags.EnableIntSoft:
 
     with Live(console=console, screen=True, auto_refresh=False) as live:
         while True:
-            live.update(create_process_table(console.size.height - 4), refresh=True)
-            time.sleep(1)
+            try:
+                live.update(create_process_table(console.size.height - 4), refresh=True)
+                time.sleep(1)
+            except KeyboardInterrupt:
+                break
