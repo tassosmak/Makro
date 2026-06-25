@@ -34,6 +34,7 @@ class JSONhandle:
         else:
             if flags.EnableIntSoft:
                 RD.CommandShow("No file found.").Info()
+                raise FileNotFoundError
 
 
 
