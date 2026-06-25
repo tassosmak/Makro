@@ -22,7 +22,7 @@ def get_permisions(file_name, show=False):
         if show:
             print("Personal_data: ", personal_data)
     except:
-        from Makro.MakroCore.RendererKit import Renderer as RD
+        # from Makro.MakroCore.RendererKit import Renderer as RD
         # RD.CommandShow(f"The {file_name} plugin is missing the premisions key in the json file.", "Plugin System").Info()
         from src.MiddleManKit.file_handler import gen_file, json_setup
         gen_file(file_name)
