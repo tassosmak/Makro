@@ -102,14 +102,14 @@ class Cryptography:
 
 class JSON:
     
-    def __init__(self):
-        self.path = info.path
+    def __init__(self, path):
+        self.path = path
         if not info.ready:
             RD.CommandShow(f"Render was called before util.build() was called. Please call util.build() before using Render.", "Plugin System").Info()
             utils.Exit.exit()
     
-    def json_read(self, parameter):
-        return JSONhander.JSONhandle(self.path).read_file(info.filename, parameter)
+    def json_read(self, filename, parameter):
+        return JSONhander.JSONhandle(self.path).read_file(filename, parameter)
     def json_delete(self, array):
         return (JSONhander.JSONhandle(self.path).del_contents(array))
     
