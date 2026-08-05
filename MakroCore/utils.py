@@ -24,7 +24,7 @@ def edit_user_config(username=str, Loc1=str, Loc2=str, Content=str):
         )
 
 def set_flags():
-        ask_which = input('\n1)Userless Connection\n2)GO TO FTU\n3)Fully GUI\n4)Run-Threads Inside\n5)Run-Straight-Builtin\n6)Create_Graph\n7)Runtime_Tracer\n\nType Here:')
+        ask_which = input(f'\n1)Userless Connection -> {flags.UserLess_Connection}\n2)GO TO FTU -> {flags.GO_TO_FTU}\n3)Fully GUI -> {flags.Fully_GUI}\n4)Run-Threads Inside -> {flags.Inside_Thread}\n5)Run-Straight-Builtin -> {flags.Run_Straight_Builtin}\n6)Create_Graph -> {flags.Create_Graph}\n7)Runtime_Tracer -> {flags.Runtime_Tracer}\n\nType Here:')
         
         if ask_which == '1':
             flags.UserLess_Connection = not flags.UserLess_Connection

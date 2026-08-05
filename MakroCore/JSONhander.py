@@ -30,10 +30,10 @@ class JSONhandle:
                     return _object_content
                 except json.JSONDecodeError:
                     if flags.EnableIntSoft:
-                        RD.CommandShow("Error reading file").Info()
+                        RD.CommandShow("Error reading file").Show('WARNING')
         else:
             if flags.EnableIntSoft:
-                RD.CommandShow("No file found.").Info()
+                RD.CommandShow("No file found.").Show('WARNING')
                 raise FileNotFoundError
 
 

@@ -1,30 +1,33 @@
+from Makro.MakroCore.RendererKit import Renderer as RD
 from Makro.MakroCore.JSONhander import JSONhandle
+from Makro.Plugins.src.MiddleManKit import info
 from Makro.MakroCore import flags
-from pathlib import Path
+# from pathlib import Path
 
-def get_permisions(file_name, show=False):
-    global filesystem, notifications, personal_data
 
-    plugin_name = Path(file_name).stem
-    path = f'{flags.base_folder}/../Plugins/{plugin_name}.json'
-    # while True: print(path)
+def get_permisions(show=False):
+
+    # info.plugin_name = Path(info.filename).stem
+    info.path = f'{flags.base_folder}/../Plugins/{info.filename}.json'
+
+    # RD.CommandShow(f"Plugin: {info.filename} is requesting access to your system., {info.path}").Info() # TODO: DELETE IT
+    # Plugin: test is requesting access to your system., /Users/tassosmak/Downloads/PyTerminal/Makro/MakroCore/../Plugins/test.json
+    # RD.CommandShow(f"1): {info.plugin_name} 2){info.filename}").Info() # TODO: DELETE IT
 
     try:
-        filesystem = JSONhandle(path).read_file('premisions', 'Filesystem')
+        info.filesystem = JSONhandle(info.path).read_file('premisions', 'Filesystem')
         if show:
-            print("Filesystem: ", filesystem)
+            print("Filesystem: ", info.filesystem)
 
-        notifications = JSONhandle(path).read_file('premisions', 'Notifications')
+        info.notifications = JSONhandle(info.path).read_file('premisions', 'Notifications')
         if show:
-            print("Notifications: ", notifications)
+            print("Notifications: ", info.notifications)
 
-        personal_data = JSONhandle(path).read_file('premisions', 'Personal_data')
+        info.personal_data = JSONhandle(info.path).read_file('premisions', 'Personal_data')
         if show:
-            print("Personal_data: ", personal_data)
+            print("Personal_data: ", info.personal_data)
     except:
-        # from Makro.MakroCore.RendererKit import Renderer as RD
-        # RD.CommandShow(f"The {file_name} plugin is missing the premisions key in the json file.", "Plugin System").Info()
         from src.MiddleManKit.file_handler import gen_file, json_setup
-        gen_file(file_name)
-        json_setup(path, file_name)
-        get_permisions(file_name, show)
+        gen_file()
+        json_setup(info.path, info.filename)
+        get_permisions()
