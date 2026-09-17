@@ -284,7 +284,11 @@ def CommandList(Command=str):
             if not flags.safe_md:
                 if flags.EnableIntSoft:
                     clear_screen()
-                    Notifications().Sender(SystemCalls.show_flags())
+                    sys_flags = SystemCalls.show_flags()
+                    try:
+                        Notifications().Sender(sys_flags)
+                    except:pass
+                    sys_flags = str
 
         if Command == 'converter':
             TaskHandler.SecondaryTask('temp_mesuare_converter', stay_end=True)
