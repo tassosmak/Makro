@@ -20,9 +20,7 @@ class Render:
     
     Quest_result = ''
     
-    def __init__(self, text="Blank Request", header=flags.Default_text):
-        if not header==flags.Default_text:
-                header=f'{flags.Default_text} {header}'
+    def __init__(self, text="Blank Request", header=str):
         self.text = text
         self.header = header
         if not info.ready:
